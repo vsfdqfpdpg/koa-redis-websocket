@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script>
+        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+            ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
+    <script>
+        // const ws = new WebSocket("ws://localhost:3000");
+        // ws.onopen = () => {
+        //     console.log("connected")
+        //     ws.send("to server");
+        // };
+        //
+        // ws.onmessage = ({data}) => {
+        //     console.log("incoming: ", data)
+        // }
+    </script>
+    <script src="https://cdn.socket.io/4.1.1/socket.io.min.js"
+            integrity="sha384-cdrFIqe3RasCMNE0jeFG9xJHog/tgOVC1E9Lzve8LQN1g5WUHo0Kvk1mawWjxX7a"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+<h1>Messages:</h1>
+<ul id="messages"></ul>
+<form id="form" action="">
+    <input id="input" autocomplete="off"/>
+    <button>Send</button>
+</form>
+<script>
+    let input = document.getElementById('input');
+    let form = document.getElementById('form');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (input.value) {
+            socket.emit('app:notifications', input.value);
+            input.value = '';
+        }
+    });
+
+    const socket = io("ws://localhost:3000");
+    socket.on("connect", () => {
+        console.log(socket.id); // "G5p5..."
+    });
+    let messages = document.getElementById('messages');
+    socket.on('app:notifications', function (msg) {
+        const item = document.createElement('li');
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+</script>
+</body>
+</html>
