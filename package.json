@@ -1,5 +1,5 @@
 {
-  "name": "koa-redis-socket.io-livereload",
+  "name": "koa-redis-websocket",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
